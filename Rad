@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drehendes Rad Simulation mit 60-120 U/min</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    #slider {
+      width: 300px;
+      margin-top: 20px;
+    }
+
+    /* Simuliertes Rad */
+    #wheel {
+      width: 150px;
+      height: 150px;
+      border: 10px solid black;
+      border-radius: 50%;
+      margin: 0 auto;
+      background: conic-gradient(white 25%, gray 25% 50%, white 50% 75%, gray 75%); /* Markierungen auf dem Rad */
+      position: relative;
+      animation: spin 1s linear infinite; /* Anfangsgeschwindigkeit */
+    }
+
+    /* Animation für die Rotation */
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    #output {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Simuliertes drehendes Rad mit 60-120 U/min</h1>
+
+  <div id="wheel"></div>
+
+  <label for="slider">Geschwindigkeit einstellen:</label>
+  <input type="range" id="slider" min="0" max="100" value="50" step="1">
+
+  <div id="output">Geschwindigkeit: 50% (90 U/min)</div>
+
+  <script>
+    const slider = document.getElementById('slider');
+    const wheel = document.getElementById('wheel');
+    const output = document.getElementById('output');
+
+    // Funktion zum Ändern der Drehgeschwindigkeit
+    slider.addEventListener('input', function() {
+      const speed = slider.value;
+
+      // Berechne die Umdrehungen pro Minute basierend auf dem Schiebereglerwert:
+      // Bei 100% sind es 120 U/min,
+      // Bei 0% sind es 60 U/min.
+      const rpm = 60 + (speed / 100) * 60; // Berechnet die U/min zwischen 60 und 120
+
+      // Berechne die Animationsdauer basierend auf den U/min:
+      const animationDuration = 60 / rpm; // Dauer einer Umdrehung in Sekunden
+      wheel.style.animationDuration = `${animationDuration}s`; // Setzt die Animationsdauer
+
+      output.textContent = `Geschwindigkeit: ${speed}% (${rpm.toFixed(2)} U/min)`; // Zeigt den aktuellen Wert an
+    });
+  </script>
+
+</body>
+</html>
